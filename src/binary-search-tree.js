@@ -81,6 +81,46 @@ class BinarySearchTree {
 
   remove(data) {
 
+    this.head = removeNode(this.head, data);
+
+    function removeNode(node, data) {
+      if (!node) {
+        return null;
+      }
+
+      if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (data > node.data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        if (!node.left && !node.right) {
+          return null;
+        }
+
+        if (!node.right) {
+          node = node.left;
+          return node;
+        }
+
+        if (!node.left) {
+          node = node.right;
+          return node;
+        }
+
+        let maxDataInLeftNode = node.left;
+
+        while (maxDataInLeftNode.right) {
+          maxDataInLeftNode = maxDataInLeftNode.right;
+        }
+
+        node.data = maxDataInLeftNode.data;
+        node.left = removeNode(node.left, maxDataInLeftNode.right);
+
+        return node;
+      }
+    }
   }
 
   min() {
